@@ -450,7 +450,7 @@ BLELib_RespForDemand writeinDemandCb(const uint8_t unique_id, const uint8_t *con
         Driver_GPIO.WritePin(23, pin);
         
         if ((value[0] & 0xf0) != (gpio_val & 0xf0)) {
-            //•Ï‰»‚ ‚Á‚½‚Ì‚Å”½‰f
+            //å¤‰åŒ–ã‚ã£ãŸã®ã§åæ˜ 
             gpio_val &= 0x0f;
             gpio_val |= (value[0] & 0xf0);
             BLELib_updateValue(unique_id, &gpio_val, sizeof(gpio_val));
@@ -626,7 +626,7 @@ int BLE_init(uint8_t id)
     
     bnmsg_gap_device_name[11] = id + '0';
     
-    //GPIO“™ƒyƒŠƒtƒFƒ‰ƒ‹‚ð‰Šúó‘Ô‚ÉÝ’è
+    //GPIOç­‰ãƒšãƒªãƒ•ã‚§ãƒ©ãƒ«ã‚’åˆæœŸçŠ¶æ…‹ã«è¨­å®š
     init_io_state();
     
     return 0;
@@ -678,7 +678,7 @@ static void ble_online_gpio_update_val(void)
     }
     
     if ((gpio_val & 0x0f) != di) {
-        //“ü—Í‚É•ÏX‚ ‚è
+        //å…¥åŠ›ã«å¤‰æ›´ã‚ã‚Š
         gpio_val &= 0xf0;
         gpio_val |= di;
         BLELib_updateValue(GATT_UID_GPIO, &gpio_val, sizeof(gpio_val));
@@ -693,10 +693,10 @@ static void ble_online_airp_notify(void)
     
     temp = BMP280_drv_temp_get();
     airp = BMP280_drv_press_get();
-    //‰·“x(0.01digC’PˆÊ)
+    //æ¸©åº¦(0.01digCå˜ä½)
     airp_val[0] = (temp & 0xff);
     airp_val[1] = (temp >> 8) & 0xff;
-    //‹Cˆ³(1/256Pa’PˆÊ)
+    //æ°—åœ§(1/256Paå˜ä½)
     airp_val[2] = (airp & 0xff);
     airp_val[3] = (airp >> 8) & 0xff;
     airp_val[4] = (airp >> 16) & 0xff;
@@ -802,7 +802,7 @@ static void ble_online_motion_notify(void)
     }
     for (int i = 0; i < (sizeof(motion_val) / 2); i++) {
         if (motion_val[i] != 0) {
-            //Œv‘ªŒ‹‰Ê‚ª•ÛŽ‚ç‚ê‚Ä‚é
+            //è¨ˆæ¸¬çµæžœãŒä¿æŒã‚‰ã‚Œã¦ã‚‹
             ret = BLELib_notifyValue(GATT_UID_MOTION, motion_val, val_len);
             if (ret != BLELIB_OK) {
                 sprintf(msg, "GATT_UID_MOTION: Notify failed. ret=%d\r\n", ret);
@@ -868,51 +868,51 @@ int BLE_main(void)
             if (TZ01_system_tick_check_timeout(USRTICK_NO_BLE_MAIN)) {
                 TZ01_system_tick_start(USRTICK_NO_BLE_MAIN, 10);
                 
-                //LED“_–Å(0, 200, 400, 600, 800ms)
+                //LEDç‚¹æ»…(0, 200, 400, 600, 800ms)
                 if ((cnt % 20) == 0) {
                     led_blink = (led_blink == 0) ? 1 : 0;
                     Driver_GPIO.WritePin(11, led_blink);
                 }
                 
-                //GPIO“ü—ÍƒTƒ“ƒvƒŠƒ“ƒO(50ms–ˆ)
+                //GPIOå…¥åŠ›ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°(50msæ¯Ž)
                 if ((cnt % 5) == 0) {
                     di_state_update();
                 }
                 
-                //GPIO“ü—Í’Ê’m(100, 300, 500, 700, 900ms)
+                //GPIOå…¥åŠ›é€šçŸ¥(100, 300, 500, 700, 900ms)
                 if ((cnt % 20) == 10) {
                     ble_online_gpio_update_val();
                 }
                 
-                //‹Cˆ³ƒZƒ“ƒT[“Ç‚ÝŽæ‚è/XV(400ms)
+                //æ°—åœ§ã‚»ãƒ³ã‚µãƒ¼èª­ã¿å–ã‚Š/æ›´æ–°(400ms)
                 if (cnt == 40) {
                     if (airp_enable_val == 1) {
                         ble_online_airp_notify();
                     }
                 }
                 
-                //ƒ‚[ƒVƒ‡ƒ“ƒZƒ“ƒT[ƒTƒ“ƒvƒŠƒ“ƒO(50ms–ˆ)
+                //ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚»ãƒ³ã‚µãƒ¼ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°(50msæ¯Ž)
                 if ((cnt % 5) == 0) {
                     if (motion_enable_val == 1) {
                         ble_online_motion_sample();
                     }
                 }
                 
-                //ƒ‚[ƒVƒ‡ƒ“ƒZƒ“ƒTWŒv(500ms–ˆ)
+                //ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚»ãƒ³ã‚µé›†è¨ˆ(500msæ¯Ž)
                 if ((cnt % 50) == 0) {
                     if (motion_enable_val == 1) {
                         ble_online_motion_average(cnt);
                     }
                 }
                 
-                //ƒ‚[ƒVƒ‡ƒ“ƒZƒ“ƒT’Ê’m
+                //ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚»ãƒ³ã‚µé€šçŸ¥
                 if ((cnt % 100) == 0) {
                     if (motion_enable_val == 1) {
                         ble_online_motion_notify();
                     }
                 }
                 
-                //1000ms‚ÅƒAƒbƒvƒ‰ƒEƒ“ƒh
+                //1000msã§ã‚¢ãƒƒãƒ—ãƒ©ã‚¦ãƒ³ãƒ‰
                 cnt = (cnt + 1) % 100;
             }
             break;

@@ -26,9 +26,9 @@ static bool check_valid(uint8_t *cnf, uint8_t sz)
 {
     bool ret = false;
     uint8_t cd = 0;
-    //ƒ}ƒWƒbƒNƒR[ƒhŠm”F
+    //ãƒã‚¸ãƒƒã‚¯ã‚³ãƒ¼ãƒ‰ç¢ºèª
     if (memcmp(cnf, "hrGC", 4) == 0) {
-        //ƒ`ƒFƒbƒNƒfƒBƒWƒbƒgŠm”F
+        //ãƒã‚§ãƒƒã‚¯ãƒ‡ã‚£ã‚¸ãƒƒãƒˆç¢ºèª
         for (int i = 0; i < sz; i++) {
             cd ^= cnf[i];
         }
@@ -127,7 +127,7 @@ bool config_load(void)
     
     if (valid_pcnf) {
         /* Primary OK */
-        //Primary—Ìˆæ‚©‚ç“Ç‚İ‚İ
+        //Primaryé ˜åŸŸã‹ã‚‰èª­ã¿è¾¼ã¿
         memset(stored_config.shortened_local_name, 0, 20);
         for (int i = 0; i < 20; i++) {
             stored_config.shortened_local_name[i] = pcnf[i + 4];
@@ -138,16 +138,16 @@ bool config_load(void)
         
         if (valid_scnf) {
             /* Secondary OK */
-            //‚È‚É‚à‚µ‚È‚¢‚æ
+            //ãªã«ã‚‚ã—ãªã„ã‚ˆ
         } else {
             /* Secondary NG */
-            //Secondary‚ğ•œ‹Œ‚³‚¹‚é‚æ
+            //Secondaryã‚’å¾©æ—§ã•ã›ã‚‹ã‚ˆ
             write_to_addr(&stored_config, CONFIG_BASE_ADDR_2);
         }
     } else {
         if (valid_scnf) {
             /* Secondary OK */
-            //Secondary—Ìˆæ‚©‚ç“Ç‚İ‚İ
+            //Secondaryé ˜åŸŸã‹ã‚‰èª­ã¿è¾¼ã¿
             memset(stored_config.shortened_local_name, 0, 20);
             for (int i = 0; i < 20; i++) {
                 stored_config.shortened_local_name[i] = scnf[i + 4];
@@ -156,13 +156,13 @@ bool config_load(void)
                 }
             }
             
-            //Primary—Ìˆæ‚ğ•œ‹Œ‚³‚¹‚é‚æ
+            //Primaryé ˜åŸŸã‚’å¾©æ—§ã•ã›ã‚‹ã‚ˆ
             write_to_addr(&stored_config, CONFIG_BASE_ADDR_1);
         } else {
             /* Secondary NG */
             memset(stored_config.shortened_local_name, 0, 20);
             strncpy(stored_config.shortened_local_name, DEFAULT_SHORTENED_LOCAL_NAME, strlen(DEFAULT_SHORTENED_LOCAL_NAME));
-            //Primary—Ìˆæ‚àSecondary—Ìˆæ‚àƒfƒtƒHƒ‹ƒg’l‚ğ‘‚­‚æ
+            //Primaryé ˜åŸŸã‚‚Secondaryé ˜åŸŸã‚‚ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã‚’æ›¸ãã‚ˆ
             write_to_addr(&stored_config, CONFIG_BASE_ADDR_1);
             write_to_addr(&stored_config, CONFIG_BASE_ADDR_2);
         }

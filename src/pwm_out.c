@@ -23,9 +23,9 @@ static uint32_t INPUT_CLOCK = 0;
 
 bool pwm_out_init(void)
 {
-    //ƒ^ƒCƒ}[‚Ì“ü—ÍƒNƒƒbƒN‚ğæ“¾
+    //ã‚¿ã‚¤ãƒãƒ¼ã®å…¥åŠ›ã‚¯ãƒ­ãƒƒã‚¯ã‚’å–å¾—
     int div = Driver_PMU.GetPrescaler(PMU_CD_PPIER0);
-    //// ƒVƒXƒeƒ€ƒRƒAƒNƒƒbƒN / ƒNƒƒbƒNƒhƒƒCƒ“`PMU_CD_PPIER0'‚Å‚Ì•ªü
+    //// ã‚·ã‚¹ãƒ†ãƒ ã‚³ã‚¢ã‚¯ãƒ­ãƒƒã‚¯ / ã‚¯ãƒ­ãƒƒã‚¯ãƒ‰ãƒ¡ã‚¤ãƒ³`PMU_CD_PPIER0'ã§ã®åˆ†å‘¨
     INPUT_CLOCK = (SystemCoreClock / div) / TIMER_CLK_DIV;
     
     for (int i = 0; advtmr[i] != NULL; i++) {
@@ -33,8 +33,8 @@ bool pwm_out_init(void)
         advtmr[i]->Initialize(NULL, 0);
         advtmr[i]->PowerControl(ARM_POWER_FULL);
         advtmr[i]->Configure(16, TMR_COUNT_MODE_PERIODIC, TIMER_CLK_DIV);
-        //PWM‚Ìİ’è
-        advtmr[i]->ConfigureTFF(TMR_TFF_MODE_CMP_TOGGLE, false, false);    //ƒRƒ“ƒyƒAƒ}ƒbƒ`‚µ‚½‚ço—Í‚ğƒgƒOƒ‹‚·‚é‚æ
+        //PWMã®è¨­å®š
+        advtmr[i]->ConfigureTFF(TMR_TFF_MODE_CMP_TOGGLE, false, false);    //ã‚³ãƒ³ãƒšã‚¢ãƒãƒƒãƒã—ãŸã‚‰å‡ºåŠ›ã‚’ãƒˆã‚°ãƒ«ã™ã‚‹ã‚ˆ
         advtmr[i]->EnableCompare(true);
     }
     
@@ -46,19 +46,19 @@ bool pwm_out_start(PWM_OUT_CH ch, uint32_t clock, float duty)
     uint16_t cnt, cmp;
     
     if (INPUT_CLOCK == 0) {
-        return false;   //‰Šú‰»I‚í‚Á‚Ä‚È‚¢
+        return false;   //åˆæœŸåŒ–çµ‚ã‚ã£ã¦ãªã„
     }
     
     if ((clock < PWM_MIN_FREQ) || (clock > PWM_MAX_FREQ)) {
-        return false;   //ƒNƒƒbƒN‚ª”ÍˆÍŠO
+        return false;   //ã‚¯ãƒ­ãƒƒã‚¯ãŒç¯„å›²å¤–
     }
     
     if ((duty < 0.0) || (duty > 1.0)) {
-        return false;   //ƒfƒ…[ƒeƒB‚ª”ÍˆÍŠO
+        return false;   //ãƒ‡ãƒ¥ãƒ¼ãƒ†ã‚£ãŒç¯„å›²å¤–
     }
     
     if (duty == 1.0) {
-        //Duty 100%‚Íü”g”‚ğ‰º‚°‚Ä‚½‚¤‚¦‚ÅHi‚É’£‚è•t‚¯‚é
+        //Duty 100%æ™‚ã¯å‘¨æ³¢æ•°ã‚’ä¸‹ã’ã¦ãŸã†ãˆã§Hiã«å¼µã‚Šä»˜ã‘ã‚‹
         advtmr[ch]->Stop();
         advtmr[ch]->ConfigureTFF(TMR_TFF_MODE_CMP_ONE, false, false);
         advtmr[ch]->SetCompareValue(0, false);

@@ -47,9 +47,9 @@ uint64_t uniq;
 
 extern TZ10XX_DRIVER_PMU  Driver_PMU;
 extern TZ10XX_DRIVER_GPIO Driver_GPIO;
-extern TZ10XX_DRIVER_SPI  Driver_SPI3;  //9軸モーションセンサー
-extern ARM_DRIVER_I2C     Driver_I2C1;  //気圧センサー
-extern ARM_DRIVER_I2C     Driver_I2C2;  //充電IC
+extern TZ10XX_DRIVER_SPI  Driver_SPI3;  //9霆ｸ繝｢繝ｼ繧ｷ繝ｧ繝ｳ繧ｻ繝ｳ繧ｵ繝ｼ
+extern ARM_DRIVER_I2C     Driver_I2C1;  //豌怜悸繧ｻ繝ｳ繧ｵ繝ｼ
+extern ARM_DRIVER_I2C     Driver_I2C2;  //蜈�髮ｻIC
 
 static bool init(void)
 {
@@ -95,13 +95,13 @@ static bool init(void)
     //PWM
     pwm_out_init();
     
-    //9軸モーションセンサー
+    //9霆ｸ繝｢繝ｼ繧ｷ繝ｧ繝ｳ繧ｻ繝ｳ繧ｵ繝ｼ
     if (MPU9250_drv_init(&Driver_SPI3)) {
         MPU9250_drv_start_maesure(MPU9250_BIT_ACCEL_FS_SEL_16G, MPU9250_BIT_GYRO_FS_SEL_2000DPS, MPU9250_BIT_DLPF_CFG_20HZ, MPU9250_BIT_A_DLPFCFG_20HZ);
     } else {
         return false;
     }
-    //気圧センサー
+    //豌怜悸繧ｻ繝ｳ繧ｵ繝ｼ
     if (BMP280_drv_init(&Driver_I2C1) == false) {
         return false;
     }

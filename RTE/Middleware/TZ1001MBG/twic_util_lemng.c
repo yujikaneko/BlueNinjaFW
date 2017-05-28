@@ -782,7 +782,7 @@ void twicUtGattClientCleanup(void)
  * @param uint16_t end_handle The Ending Handle shall be set to 0xFFFF.
  * @param uint64_t uuid_lsb The Attribute Protocol Find By
  * Type Value Request shall be used with the Attribute Type parameter
- * set to the UUID for -A«Primary Service» and the Attribute Value set$)B
+ * set to the UUID for -Arimary Serviceã‚µ and the Attribute Value set$)B
  * to the 16-bit Bluetooth UUID or 128-bit UUID for the specific
  * primary service.
  * If UUID is 7905F431-B5CE-4E99-A40F-4B1E122D00D0, this parameter
